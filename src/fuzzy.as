@@ -1,36 +1,45 @@
-var FuzzyLogic = (function() {
-
-    "use strict";
-
-    var C = function() {};
-
-    C.prototype = {
-
-        getResult: function(options) {
+package com.IA 
+{
+	/**
+	 * ...
+	 * @author zulad
+	 */
+	public class FuzzyLogic 
+	{
+		
+		public function FuzzyLogic() 
+		{
+			//
+		}
+		
+		public function getResult (options) {
+			
             var variables = this.construct(options.variables_input),
                 fuzzy_input = this.fuzzification(options.crisp_input, variables),
                 output_combination = this.output_combination(fuzzy_input, options.inferences, options.variable_output),
                 fuzzy_output = this.takeMaxOfArraySet(output_combination),
                 crisp_output = this.defuzzification(fuzzy_output, this.construct_variable(options.variable_output.sets));
-
-            return crisp_output;
-        },
-
-        construct: function(variables) {
+				
+		return crisp_output;
+        }
+		
+        public function  construct (variables) {
+			
             var ob = [],
                 i;
-
+			
             for (i = variables.length - 1; i >= 0; i -= 1) {
                 ob[i] = this.construct_variable(variables[i].sets);
             }
+			
+        return ob;
+        }
 
-            return ob;
-        },
-
-        construct_variable: function(f) {
+        public function construct_variable (f) {
+			
             var obv = [],
                 i;
-
+			
             for (i = f.length - 1; i >= 0; i -= 1) {
                 obv[i] = {
                     a: f[i],
@@ -40,32 +49,36 @@ var FuzzyLogic = (function() {
                     mDown: (1 / (f[i][3] - f[i][2]))
                 };
             }
-            return obv;
-        },
+			
+        return obv;
+        }
 
-        fuzzification: function(input, variables) {
+        public function fuzzification (input, variables) {
+			
             var value = [],
                 i;
-
+			
             for (i = variables.length - 1; i >= 0; i -= 1) {
                 value[i] = this.fuzzification_variable(input[i], variables[i]);
             }
+			
+        return value;
+        }
 
-            return value;
-        },
-
-        fuzzification_variable: function(x, sets) {
+        public function fuzzification_variable (x, sets) {
+			
             var valori = [],
                 i;
-
+			
             for (i = sets.length - 1; i >= 0; i -= 1) {
                 valori[i] = this.fuzzification_function(x, sets[i]);
             }
+			
+        return valori;
+        }
 
-            return valori;
-        },
-
-        fuzzification_function: function(x, set) {
+        public function fuzzification_function (x, set) {
+			
             var f = 0;
 
             if (x <= set.a[0]) {
@@ -87,15 +100,16 @@ var FuzzyLogic = (function() {
                     }
                 }
             }
+			
+        return f;
+        }
 
-            return f;
-        },
-
-        output_combination: function(valori, inferences, variable_output) {
+        public function output_combination (valori, inferences, variable_output) {
+			
             var a = [],
                 i,
                 j;
-
+			
             for (i = variable_output.sets.length - 1; i >= 0; i -= 1) {
                 a[i] = [];
             }
@@ -107,11 +121,12 @@ var FuzzyLogic = (function() {
                     }
                 }
             }
+			
+        return a;
+        }
 
-            return a;
-        },
-
-        defuzzification: function(outputSet, variable) {
+        public function defuzzification (outputSet, variable) {
+			
             var num = 0,
                 den = 0,
                 i,
@@ -128,8 +143,9 @@ var FuzzyLogic = (function() {
                 amezzi,
                 bmezzi,
                 mmezzi;
-
+			
             for (i = outputSet.length - 1; i >= 0; i -= 1) {
+				
                 v = variable[i];
                 point = v.a;
                 h = outputSet[i];
@@ -167,34 +183,34 @@ var FuzzyLogic = (function() {
                 num += area * x_baricentro;
                 den += area;
             }
-
-            return (den === 0 ? 0 : (num / den));
-        },
-
-        takeMaxOfArraySet: function(set) {
+			
+        return (den === 0 ? 0 : (num / den));
+        }
+		
+        public function takeMaxOfArraySet (set) {
+			
             var output = [],
                 i;
-
+			
             for (i = set.length - 1; i >= 0; i -= 1) {
                 output[i] = this.takeMaxOfArray(set[i]);
             }
-
-            return output;
-        },
-
-        takeMaxOfArray: function(arr) {
+			
+        return output;
+        }
+		
+        public function takeMaxOfArray (arr) {
+			
             var max = arr[0],
                 j;
-
+			
             for (j = 1; j < arr.length; j += 1) {
                 max = arr[j] > max ? arr[j] : max;
             }
-
-            return max;
+			
+        return max;
         }
+		
+    }
 
-    };
-
-    return C;
-
-}());
+}
